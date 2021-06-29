@@ -3,10 +3,14 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+// import EventForm from './ScheduleForm'
+// import 'bootstrap/dist/css/bootstrap.min.css';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+   <App/>
+    {/* <EventForm/> */}
+   
   </React.StrictMode>,
   document.getElementById('root')
 );
