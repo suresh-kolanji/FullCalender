@@ -43,6 +43,11 @@
   "resolved" "https://registry.npmjs.org/@emotion/hash/-/hash-0.8.0.tgz"
   "version" "0.8.0"
 
+"@fortawesome/fontawesome-free@^5.15.3":
+  "integrity" "sha512-rFnSUN/QOtnOAgqFRooTA3H57JLDm0QEG/jPdk+tLQNL/eWd+Aok8g3qCI+Q1xuDPWpGW/i9JySpJVsq8Q0s9w=="
+  "resolved" "https://registry.npmjs.org/@fortawesome/fontawesome-free/-/fontawesome-free-5.15.3.tgz"
+  "version" "5.15.3"
+
 "@fullcalendar/common@~5.8.0":
   "integrity" "sha512-cKmXNgo/9auw86MOwXxA+5FRrgvbE93C9YDwic+Alfm3bUruDTzJDnuvRndrFVurpSBLm6/ZitaR+yoWKLIsgA=="
   "resolved" "https://registry.npmjs.org/@fullcalendar/common/-/common-5.8.0.tgz"
@@ -62,6 +67,14 @@
 "@fullcalendar/daygrid@^5.8.0", "@fullcalendar/daygrid@~5.8.0":
   "integrity" "sha512-VrqwI97cewoUjFrKT67sS+f+JANI8xMx0g5bpM0XgV/KEEwvXpH5OmwkFSbXOnx1m4RXsvolQc6EBZpnJCf69Q=="
   "resolved" "https://registry.npmjs.org/@fullcalendar/daygrid/-/daygrid-5.8.0.tgz"
+  "version" "5.8.0"
+  dependencies:
+    "@fullcalendar/common" "~5.8.0"
+    "tslib" "^2.1.0"
+
+"@fullcalendar/interaction@^5.8.0":
+  "integrity" "sha512-ocOCS5g1AT06uR3OeKpN2WKJO4BLmnUZn/v2H/iPllbC7MwYBSy/obC4CoQqnK93FyJXUOFH1KfLwTK013C1+w=="
+  "resolved" "https://registry.npmjs.org/@fullcalendar/interaction/-/interaction-5.8.0.tgz"
   "version" "5.8.0"
   dependencies:
     "@fullcalendar/common" "~5.8.0"

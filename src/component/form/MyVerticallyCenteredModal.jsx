@@ -15,10 +15,15 @@ const MyVerticallyCenteredModal = (props) => {
   const [endvalue, onChanges] = useState("10:00");
 
   const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+
 
   const [Tittle, setTittle] = useState("");
   const [Priority, setPriority] = useState("");
+  const [show, setShow] = useState(false);
 
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
   useEffect(() => {
     const rememberMe = localStorage.getItem("calenderValue");
     console.log("value from local storage", JSON.parse(rememberMe));
@@ -28,8 +33,9 @@ const MyVerticallyCenteredModal = (props) => {
     if (rememberMe) {
       for (var i = 0; i < ddd.length; i++) {
         console.log(ddd[i].startTime);
-        const sdate = moment(ddd[i].startTime).format('ddd MMM D YYYY HH:mm:ss ZZ');
-        const edate = moment(ddd[i].endTime).format('ddd MMM D YYYY HH:mm:ss ZZ');
+        const sdate = moment(ddd[i].start).format('ddd MMM D YYYY HH:mm:ss ZZ');
+        const edate = moment(ddd[i].end).format('ddd MMM D YYYY HH:mm:ss ZZ');
+       
         const tit =ddd[i].title;
         const lpriority=ddd[i].priority;   
         setPriority(lpriority); 
@@ -37,31 +43,14 @@ const MyVerticallyCenteredModal = (props) => {
 
          const ooo=moment(new Date()).format('D MMM YYYY');
         const vvvf=moment(new Date(sdate)).format('D MMM YYYY');
+       const lid = ddd[i].id;
         var mlpriority="success";
 
-if(ooo===vvvf){
-
-////Notificatins start/////
-store.addNotification({
-  title: "Calender Notification",
-  message: tit,
-  type: lpriority,
-  insert: "top",
-  container: "top-right",
-  animationIn: ["animate__animated", "animate__fadeIn"],
-  animationOut: ["animate__animated", "animate__fadeOut"],
-  dismiss: {
-    duration: 5000,
-    onScreen: true
-  },
-  width:600
-});
-
-}
-
         copy.push({
-          startTime: new Date(sdate),
-            endTime: new Date(edate),
+          id:lid,
+          date:new Date(sdate),
+          start: new Date(sdate),
+            end: new Date(edate),
             title: tit,
             priority:lpriority,
             }); 
@@ -101,26 +90,51 @@ store.addNotification({
     console.log(new Date(startDate.setHours(eHours[0], eHours[1], 0)));
     const copy=[...events]
     copy.push({
-      startTime: new Date(startDate.setHours(sHours[0], sHours[1], 0)),
-        endTime: new Date(startDate.setHours(eHours[0], eHours[1], 0)),
-        title: Tittle,
-        priority:Priority,
+      date:new Date(startDate.setHours(sHours[0], sHours[1], 0)),
+      start: new Date(startDate.setHours(sHours[0], sHours[1], 0)),
+      end: new Date(endDate.setHours(eHours[0], eHours[1], 0)),
+        title: Tittle, 
+        id:new Date(),
+        backgroundColor:Priority,
+        
     }); 
     setevents(
       copy
     );
 
     localStorage.setItem("calenderValue", JSON.stringify(copy));
+    setShow(false);
   };
   return (
     <React.Fragment>
       <Container>
-      <ReactNotification />
+     
+     <Container>
+<Row>
+    <Col>
+     
+     </Col>
+     <Col>
+     <Button variant="primary" onClick={handleShow}>
+        Add Event
+      </Button>
+     </Col><Col>
+    
+     </Col>
+</Row>
+
+     </Container>
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+       
+          <Modal.Title>Adding Calender Events</Modal.Title>
+        </Modal.Header>
+       <Modal.Body>
         <Form onSubmit={handleSubmit}>
         <Form.Row>
             <Col>
             <Form.Group as={Col} controlId="formGridState">
-            <Form.Label>Date</Form.Label>  
+            <Form.Label>Start Date</Form.Label>  
               <DatePicker
                 selected={startDate}
                 onChange={(date) => setStartDate(date)}
@@ -130,6 +144,15 @@ store.addNotification({
             <Col>
             <Form.Group as={Col} controlId="formGridState">
             <Form.Label>Start Time</Form.Label>   <TimePicker onChange={onChange} value={startvalue} /></Form.Group>
+            </Col>
+            <Col>
+            <Form.Group as={Col} controlId="formGridState">
+            <Form.Label>End Date</Form.Label>  
+              <DatePicker
+                selected={endDate}
+                onChange={(date) => setEndDate(date)}
+              />
+              </Form.Group>
             </Col>
             <Col>
             <Form.Group as={Col} controlId="formGridState">
@@ -152,9 +175,9 @@ store.addNotification({
             <Form.Group as={Col} controlId="formGridState">
       <Form.Label>Priority</Form.Label>
       <Form.Control onChange={(Priority) => handlePriChange(Priority)}  value ={Priority} name="Priority" as="select" defaultValue="Choose...">
-      <option value = "success">Regular</option>
-        <option value = "warning">Important</option>
-     
+      <option value = "#1fffff">Regular</option>
+        <option value = "#ff0000">Important</option>
+        <option value = "#1fff1f">Formal</option>
       </Form.Control>
     </Form.Group>
             
@@ -171,6 +194,21 @@ store.addNotification({
             </Col>
             </Form.Row>
         </Form>
+
+
+
+        </Modal.Body>
+       
+       
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          
+        </Modal.Footer>
+      </Modal>
+
+
       </Container>
     </React.Fragment>
   );
