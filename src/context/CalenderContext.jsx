@@ -7,13 +7,12 @@ export const CalenderProvider = (props) => {
 
   const [eDate, seteDate] = useState(new Date());
 
-  
-  const [events, setevents] = useState([  
-    
-  ]);
+  const [events, setevents] = useState([]);
 
   return (
-    <CalenderContext.Provider value={[events, setevents, sDate, setsDate,eDate, seteDate]}>
+    <CalenderContext.Provider
+      value={[events, setevents, sDate, setsDate, eDate, seteDate]}
+    >
       {props.children}
     </CalenderContext.Provider>
   );
