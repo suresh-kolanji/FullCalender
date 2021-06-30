@@ -52,7 +52,7 @@ const MyVerticallyCenteredModal = (props) => {
           start: new Date(sdate),
             end: new Date(edate),
             title: tit,
-            priority:lpriority,
+            backgroundColor:lpriority,
             }); 
       }
       setevents(
