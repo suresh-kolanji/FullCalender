@@ -12,8 +12,11 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction"; // needed
 import listPlugin from "@fullcalendar/list"; //For List View
 import moment from "moment";
+import googleCalendarPlugin from '@fullcalendar/google-calendar';
+
+
 const MyVerticallyCenteredModal = (props) => {
-  const [events, setevents] = useContext(CalenderContext);
+  const [events, setevents] = useState([]);
   const [startvalue, onChange] = useState("10:00");
   const updatedState = {};
   const [endvalue, onChanges] = useState("10:00");
@@ -68,6 +71,7 @@ const MyVerticallyCenteredModal = (props) => {
           start: new Date(sdate),
           end: new Date(edate),
           title: tit,
+          
           backgroundColor: lpriority,
           note:lnote,
         });
@@ -141,7 +145,11 @@ const MyVerticallyCenteredModal = (props) => {
             interactionPlugin,
             listPlugin,
             interactionPlugin,
+            googleCalendarPlugin,
           ]}
+
+          googleCalendarApiKey='AIzaSyANPSkbNOKYGdjBBY_Zohktn-sInewZXCg' 
+
           initialView="dayGridMonth"
           editable={true}
           selectable={true}
@@ -150,6 +158,7 @@ const MyVerticallyCenteredModal = (props) => {
             center: "title",
             right: "dayGridMonth,dayGridWeek,dayGridDay,listWeek",
           }}
+          eventSources={[{googleCalendarId:'sureshexclusive093@gmail.com'}]}
           events={events}
           eventClick={handleNotesShow}
         />
