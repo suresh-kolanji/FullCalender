@@ -14,8 +14,10 @@ import listPlugin from "@fullcalendar/list"; //For List View
 import moment from "moment";
 import googleCalendarPlugin from '@fullcalendar/google-calendar';
 
-
 const MyVerticallyCenteredModal = (props) => {
+
+ 
+ 
   const [events, setevents] = useState([]);
   const [startvalue, onChange] = useState("10:00");
   const updatedState = {};
@@ -28,20 +30,63 @@ const MyVerticallyCenteredModal = (props) => {
   const [Priority, setPriority] = useState("");
   const [Notes, setNotes] = useState("");
   const [NotesAlert, setNotesAlert] = useState("");
+  const [DeleteEvent, setDeleteEvent] = useState("");
   const [show, setShow] = useState(false);
   const [showNotes, setNotesShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  const handleNotesClose = () => setNotesShow(false);
+  const handleNotesClose = () => { setNotesShow(false);window.location.reload(); };
   const handleNotesShow = (thi) => {
     setNotesShow(true);
     const dddv = thi.event.extendedProps;
-    console.log(dddv.note);
+    console.log(thi.event.id);
     setNotesAlert(dddv.note);
+    setDeleteEvent(thi.event.id);
     setNotesShow(true);
+
   };
+ 
+  const handleDeleteEvent = (deleteId) => {
+    console.log("Delete event invoked", deleteId);
+    const rememberMe = localStorage.getItem("calenderValue");
+    const ddd = JSON.parse(rememberMe);
+    let copy = [];
+    if (rememberMe) {
+      for (var i = 0; i < ddd.length; i++) {
+        var storedId = ddd[i].id;
+        var deleteId = deleteId.DeleteEvent;
+        let result = storedId.localeCompare(deleteId);
+         if (result!=0) {
+          console.log(ddd[i].startTime);
+          const sdate = moment(ddd[i].start).format("ddd MMM D YYYY HH:mm:ss ZZ");
+          const edate = moment(ddd[i].end).format("ddd MMM D YYYY HH:mm:ss ZZ");
+          const tit = ddd[i].title;
+           const lpriority = ddd[i].priority;
+           console.log("-----lpriority---------",lpriority);
+          const lnote = ddd[i].note;
+          const lid = ddd[i].id;
+          copy.push({
+            id: lid,
+            date: new Date(sdate),
+            start: new Date(sdate),
+            end: new Date(edate),
+            title: tit,
+          
+            backgroundColor: lpriority,
+            note: lnote,
+          });
+        }
+      
+      }
+      
+    }
+    localStorage.setItem("calenderValue", JSON.stringify(copy));
+    window.location.reload();
+  };
+    
   
+ 
   useEffect(() => {
     const rememberMe = localStorage.getItem("calenderValue");
     console.log("value from local storage", JSON.parse(rememberMe));
@@ -77,9 +122,7 @@ const MyVerticallyCenteredModal = (props) => {
         });
       }
       setevents(copy);
-      console.log("--------Tittle-------------", Tittle);
-      console.log("--------Priority-----------", Priority);
-    }
+     }
   }, []);
 
   const handleChange = (e) => {
@@ -115,7 +158,7 @@ const MyVerticallyCenteredModal = (props) => {
       start: new Date(startDate.setHours(sHours[0], sHours[1], 0)),
       end: new Date(endDate.setHours(eHours[0], eHours[1], 0)),
       title: Tittle,
-      id: new Date(),
+      id: Tittle,
       backgroundColor: Priority,
       note:Notes,
     });
@@ -260,11 +303,15 @@ const MyVerticallyCenteredModal = (props) => {
        
       <Modal show={showNotes} onHide={handleNotesClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Calender Notes</Modal.Title>
+          <Modal.Title>Calender Details</Modal.Title>
         </Modal.Header>
-          <Modal.Body>{ NotesAlert}</Modal.Body>
+          <Modal.Body> Calender Notes :- {NotesAlert}</Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleNotesClose}>
+        <Button variant="warning" onClick={()=>handleDeleteEvent({DeleteEvent})}>
+            Delete Event
+          </Button>
+         
+            <Button variant="secondary" onClick={handleNotesClose}>
             Close
           </Button>
           <Button variant="primary" onClick={handleNotesClose}>
