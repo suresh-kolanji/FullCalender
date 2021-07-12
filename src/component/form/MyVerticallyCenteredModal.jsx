@@ -13,7 +13,7 @@ import interactionPlugin from "@fullcalendar/interaction"; // needed
 import listPlugin from "@fullcalendar/list"; //For List View
 import moment from "moment";
 import googleCalendarPlugin from '@fullcalendar/google-calendar';
-
+import rrulePlugin from '@fullcalendar/rrule'
 const MyVerticallyCenteredModal = (props) => {
 
  
@@ -31,6 +31,8 @@ const MyVerticallyCenteredModal = (props) => {
   const [Notes, setNotes] = useState("");
   const [NotesAlert, setNotesAlert] = useState("");
   const [DeleteEvent, setDeleteEvent] = useState("");
+  const [Recurrence, setRecurrence] = useState("");
+
   const [show, setShow] = useState(false);
   const [showNotes, setNotesShow] = useState(false);
 
@@ -98,7 +100,7 @@ const MyVerticallyCenteredModal = (props) => {
         console.log(ddd[i].startTime);
         const sdate = moment(ddd[i].start).format("ddd MMM D YYYY HH:mm:ss ZZ");
         const edate = moment(ddd[i].end).format("ddd MMM D YYYY HH:mm:ss ZZ");
-
+        console.log("---------rrule----------------",ddd[i].rrule);
         const tit = ddd[i].title;
         const lpriority = ddd[i].priority;
         const lnote = ddd[i].note;
@@ -116,7 +118,7 @@ const MyVerticallyCenteredModal = (props) => {
           start: new Date(sdate),
           end: new Date(edate),
           title: tit,
-          
+          rrule:ddd[i].rrule,
           backgroundColor: lpriority,
           note:lnote,
         });
@@ -141,6 +143,11 @@ const MyVerticallyCenteredModal = (props) => {
     setPriority(e.target.value.trim());
   };
 
+  const handleRecurChange = (e) => {
+    console.log(e.target.value);
+    setRecurrence(e.target.value.trim());
+  };
+
   const loadevents = (e) => {
     console.log("Events loaded ///////////////");
   };
@@ -160,7 +167,12 @@ const MyVerticallyCenteredModal = (props) => {
       title: Tittle,
       id: Tittle,
       backgroundColor: Priority,
-      note:Notes,
+      note: Notes,
+      rrule: {
+        freq: Recurrence
+      ,
+       
+      },
     });
     setevents(copy);
 
@@ -189,6 +201,7 @@ const MyVerticallyCenteredModal = (props) => {
             listPlugin,
             interactionPlugin,
             googleCalendarPlugin,
+            rrulePlugin,
           ]}
 
           googleCalendarApiKey='AIzaSyANPSkbNOKYGdjBBY_Zohktn-sInewZXCg' 
@@ -280,6 +293,27 @@ const MyVerticallyCenteredModal = (props) => {
                       value={Notes}
                       onChange={(Notes) => handleNotesChange(Notes)}
                     />
+                  </Form.Group>
+                </Col>
+                
+              </Form.Row>
+              <Form.Row>
+              <Col>
+                  <Form.Group as={Col} controlId="formGridState">
+                    <Form.Label>Recurrence</Form.Label>
+                    <Form.Control
+                      onChange={(Recurrence) => handleRecurChange(Recurrence)}
+                      value={Recurrence}
+                      name="Recurrence"
+                      as="select"
+                      defaultValue="Choose..."
+                    >
+                      <option value="YEARLY">Yearly</option>
+                      <option value="MONTHLY">Monthly</option>
+                      <option value="WEEKLY">Weekly</option>
+                      <option value="DAILY">Daily</option>
+                      <option value="HOURLY">Hourly</option>
+                    </Form.Control>
                   </Form.Group>
                 </Col>
               </Form.Row>
